@@ -4,6 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const passport = require("passport");
+const clubHouseRouter = require("./routes/clubHouseRouter");
 const LocalStrategy = require("passport-local").Strategy;
 
 const app = express();
@@ -31,15 +32,21 @@ app.use(
 );
 
 app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  req.session.views = (req.session.views || 0) + 1;
-  // res.send(
-  //   `<h1>Hello World (Sessions)</h1><p>Views:dd ${req.session.views}</p>`
-  // );
-  res.render("index", { views: req.session.views });
-});
+app.use(
+  "/",
+  clubHouseRouter
+
+  // (req, res) => {
+  // req.session.views = (req.session.views || 0) + 1;
+  // // res.send(
+  // //   `<h1>Hello World (Sessions)</h1><p>Views:dd ${req.session.views}</p>`
+  // // );
+  // res.render("index", { views: req.session.views });
+  // }
+);
 
 pool.query("SELECT NOW()", (err, res) => {
   if (err) {
@@ -49,6 +56,8 @@ pool.query("SELECT NOW()", (err, res) => {
   }
 });
 
-app.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
   console.log("Server is listening on port 3000");
 });
