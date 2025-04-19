@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,6 +6,32 @@
     <title>Document</title>
   </head>
   <body>
-    Hello World <%= locals.views %>
+    Hello World <%= locals.views %> <% if (locals.user) { %>
+    <p>Logged in as: <%= locals.user.email %></p>
+    <a href="/logout">Logout</a>
+    <% } %>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <% if (locals.currentUser) { %>
+    <h1>Welcome Back, <%= currentUser.username %></h1>
+    <a href="/log-out">Log Out</a>
+    <% } else { %>
+    <h1>Please Log In</h1>
+    <form action="/log-in" method="POST">
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" /><br />
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" /><br />
+      <input type="submit" value="Log In" />
+    </form>
+    <% } %>
   </body>
 </html>
