@@ -56,7 +56,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
-  database: "club_house",
+  database: "club_  house",
   port: 5432,
   password: "Asotpusa*2",
 });
