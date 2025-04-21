@@ -7,13 +7,14 @@ module.exports = function (passport) {
     new LocalStrategy(
       {
         usernameField: "email",
+        passwordField: "password",
       },
       async (email, password, done) => {
         try {
           const user = await db.getUserByEmail(email);
-          if (!user) return done(null, false, { message: "Incorrect email" });
-
           const match = await bcrypt.compare(password, user.password);
+
+          if (!user) return done(null, false, { message: "Incorrect email" });
           if (!match)
             return done(null, false, { message: "Incorrect password" });
 

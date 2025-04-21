@@ -1,5 +1,6 @@
 const passport = require("passport");
 const db = require("../db/queries");
+const bcrypt = require("bcryptjs");
 
 exports.clubHouseGet = (req, res, next) => {
   console.log(req.user);
@@ -17,7 +18,8 @@ exports.signUpGet = (req, res, next) => {
 exports.signUpPost = async (req, res, next) => {
   try {
     const { first_name, last_name, email, password } = req.body;
-    await db.signUpUser(first_name, last_name, email, password);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await db.signUpUser(first_name, last_name, email, hashedPassword);
     res.redirect("/");
   } catch (err) {
     next(err);

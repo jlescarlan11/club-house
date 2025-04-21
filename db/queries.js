@@ -6,7 +6,7 @@ module.exports = {
       `INSERT INTO users 
        (first_name, last_name, email, password) 
        VALUES ($1, $2, $3, $4) 
-       RETURNING id, email`,
+       RETURNING user_id, email`,
       [firstName, lastName, email, password]
     );
     return result.rows[0];
