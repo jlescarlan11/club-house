@@ -5,8 +5,6 @@ const { body, validationResult } = require("express-validator");
 
 const messageTrainerErr = "must be between 1 and 50 characters.";
 
-const { body } = require("express-validator");
-
 const validationSignUp = [
   body("first_name")
     .trim()
@@ -75,6 +73,10 @@ exports.signUpGet = (req, res, next) => {
 exports.signUpPost = [
   validationSignUp,
   async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.render("sign-up-form", { errors: errors.array() });
+    }
     try {
       const { first_name, last_name, email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -102,4 +104,62 @@ exports.logOutGet = (req, res, next) => {
     }
     res.redirect("/log-in");
   });
+};
+
+exports.membershipFormGet = (req, res, next) => {
+  res.render("membership-form", { user: req.user });
+};
+
+exports.membershipFormPost = async (req, res, next) => {
+  try {
+    const { passcode } = req.body;
+
+    if (!req.user) {
+      return res.render("membership-form", {
+        errors: [{ msg: "You must be logged in to join the club" }],
+        user: req.user,
+      });
+    }
+
+    if (req.user.is_member) {
+      return res.render("membership-form", {
+        errors: [{ msg: "You are already a member of the club" }],
+        user: req.user,
+      });
+    }
+
+    console.log(process.env.MEMBERSHIP_PASSCODE);
+    if (passcode !== process.env.MEMBERSHIP_PASSCODE) {
+      return res.render("membership-form", {
+        errors: [{ msg: "Incorrect passcode. Please try again." }],
+        user: req.user,
+      });
+    }
+
+    req.user.is_member = true;
+    await db.updateUserMembership(req.user.user_id, req.user);
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.createMessageGet = async (req, res, next) => {
+  try {
+    res.render("create-message-form");
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.createMessagePost = async (req, res, next) => {
+  try {
+    const { title, content } = req.body;
+
+    const message = await db.createMessage(title, content);
+    await db.createUserMessage(req.user.user_id, message.message_id);
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
 };

@@ -18,20 +18,12 @@
   <head>
     <meta charset="UTF-8" />
     <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <% if (locals.currentUser) { %>
-    <h1>Welcome Back, <%= currentUser.username %></h1>
+    <%- include('partials/errors') %>
+    <h1 class="bg-amber-600">Welcome Back, <%= currentUser.username %></h1>
+    <p><a href="/messages/new">Create New Message</a></p>
     <a href="/log-out">Log Out</a>
-    <% } else { %>
-    <h1>Please Log In</h1>
-    <form action="/log-in" method="POST">
-      <label for="email">Email:</label>
-      <input type="email" name="email" id="email" /><br />
-      <label for="password">Password:</label>
-      <input type="password" name="password" id="password" /><br />
-      <input type="submit" value="Log In" />
-    </form>
-    <% } %>
   </body>
 </html>

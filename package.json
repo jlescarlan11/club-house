@@ -1,8 +1,11 @@
 {
   "scripts": {
-    "populate-db": "node db/populatedb.js"
+    "populate-db": "node db/populatedb.js",
+    "dev": "npm run build-css & npm start",
+    "build-css": "tailwindcss --input public/tailwind.css --output public/stylesheets/style.css --watch --cssnano"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.4",
     "bcryptjs": "^3.0.2",
     "connect-pg-simple": "^10.0.0",
     "dotenv": "^16.5.0",
@@ -12,6 +15,7 @@
     "express-validator": "^7.2.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "pg": "^8.14.1"
+    "pg": "^8.14.1",
+    "tailwindcss": "^4.1.4"
   }
 }

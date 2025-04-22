@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Join the Club</title>
+    <link rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔒 Enter Secret Passcode</h1>
+
+      <%- include('partials/errors') %>
+
+      <form action="/membership-form" method="POST">
+        <div class="form-group">
+          <label for="passcode">Passcode</label>
+          <input
+            type="password"
+            id="passcode"
+            name="passcode"
+            class="input"
+            placeholder="Enter secret passcode"
+            required
+          />
+        </div>
+        <input type="submit" value="Join the Club" />
+      </form>
+
+      <p><a href="/">← Back to Dashboard</a></p>
+    </div>
+  </body>
+</html>
