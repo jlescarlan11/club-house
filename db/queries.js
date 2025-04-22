@@ -49,4 +49,17 @@ module.exports = {
     );
     return result.rows[0];
   },
+
+  getAllUserMessages: async () => {
+    const { rows } = await pool.query(
+      `
+      SELECT u.user_id, u.username, m.message_id, m.title, m.content, m.created_at, m.updated_at
+      FROM user_messages um
+      LEFT JOIN users u ON um.user_id = u.user_id
+      LEFT JOIN messages m ON um.message_id = m.message_id
+      ORDER BY m.created_at DESC;
+      `
+    );
+    return rows;
+  },
 };

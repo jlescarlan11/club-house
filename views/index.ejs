@@ -1,29 +1,39 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    Hello World <%= locals.views %> <% if (locals.user) { %>
-    <p>Logged in as: <%= locals.user.email %></p>
-    <a href="/logout">Logout</a>
-    <% } %>
-  </body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Document</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
+    <!-- Display validation or other errors -->
     <%- include('partials/errors') %>
-    <h1 class="bg-amber-600">Welcome Back, <%= currentUser.username %></h1>
+
+    <!-- Welcome message -->
+    <h1 class="bg-amber-600 p-4 text-white">
+      Welcome Back, <%= user.first_name %>!
+    </h1>
+
+    <!-- Link to create a new message -->
     <p><a href="/messages/new">Create New Message</a></p>
-    <a href="/log-out">Log Out</a>
+
+    <!-- Show messages if any -->
+    <% if (messages && messages.length) { %> <% messages.forEach(message => { %>
+    <div class="message-card border p-4 mb-4 rounded-lg shadow-sm">
+      <h2 class="text-xl font-semibold">Title: <%= message.title %></h2>
+      <% if (user.is_member) { %>
+      <p class="text-gray-600">Author: <%= message.username %></p>
+      <% } %>
+      <p class="mt-2"><%= message.content %></p>
+    </div>
+    <% }) %> <% } else { %>
+    <p>
+      No messages yet. Be the first to
+      <a href="/messages/new" class="underline">create one</a>!
+    </p>
+    <% } %>
+
+    <!-- Log out link -->
+    <a href="/log-out" class="text-red-600">Log Out</a>
   </body>
 </html>

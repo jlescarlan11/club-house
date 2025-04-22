@@ -57,13 +57,20 @@ const validationSignUp = [
     .withMessage("Passwords do not match"),
 ];
 
-exports.clubHouseGet = (req, res, next) => {
+exports.clubHouseGet = async (req, res, next) => {
   console.log(req.user);
   if (!req.user) {
     return res.redirect("/log-in");
   }
+  const messages = await db.getAllUserMessages();
+  console.log(messages);
+
   req.session.views = (req.session.views || 0) + 1;
-  res.render("index", { views: req.session.views, user: req.user });
+  res.render("index", {
+    views: req.session.views,
+    user: req.user,
+    messages: messages,
+  });
 };
 
 exports.signUpGet = (req, res, next) => {
