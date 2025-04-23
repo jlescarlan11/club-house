@@ -3,27 +3,125 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Sutta's Club - Signup</title>
   </head>
-  <body>
-    <%- include('partials/errors') %>
-    <h1>Sign Up</h1>
-    <form action="/sign-up" method="POST">
-      <label for="first_name">First Name:</label>
-      <input type="text" name="first_name" id="first_name" /><br />
-      <label for="last_name">Last Name:</label>
-      <input type="text" name="last_name" id="last_name" /><br />
-      <label for="email">Email:</label>
-      <input type="email" name="email" id="email" /><br />
-      <label for="password">Password:</label>
-      <input type="password" name="password" id="password" /><br />
-      <label for="confirmPassword">Confirm Password:</label>
-      <input
-        type="password"
-        name="confirmPassword"
-        id="confirmPassword"
-      /><br />
-      <input type="submit" value="Sign Up" />
-    </form>
+  <body class="relative min-h-dvh flex text-text bg-primary">
+    <main class="flex-1 py-8 container mx-auto px-4">
+      <div class="max-w-md mx-auto">
+        <div class="text-center mb-12">
+          <h1 class="text-5xl font-bold mb-4 text-accent">Sutta's Club</h1>
+        </div>
+
+        <form
+          action="/signup"
+          method="POST"
+          class="bg-white rounded-lg shadow-lg p-8"
+        >
+          <div class="text-center mb-4">
+            <h2 class="text-2xl font-semibold">Create a new account</h2>
+            <p class="text-text/50">It's quick and easy.</p>
+          </div>
+          <div class="space-y-4">
+            <div class="flex gap-4">
+              <div class="">
+                <label
+                  for="first_name"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  id="first_name"
+                  name="first_name"
+                  placeholder="Enter your first name"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  for="last_name"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                  >Last Name</label
+                >
+                <input
+                  type="text"
+                  id="last_name"
+                  name="last_name"
+                  placeholder="Enter your last name"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="email"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Email address</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                for="password"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Password</label
+              >
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                for="confirm_password"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Confirm Password</label
+              >
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="Confirm your password"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-accent text-white py-3 px-4 rounded-lg font-medium hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors"
+            >
+              Sign up
+            </button>
+          </div>
+        </form>
+
+        <div class="mt-8 text-center">
+          <p class="text-gray-600">
+            Already have an account?
+            <a href="/" class="text-accent font-medium hover:text-accent-dark"
+              >Log In now</a
+            >
+          </p>
+        </div>
+      </div>
+    </main>
   </body>
 </html>

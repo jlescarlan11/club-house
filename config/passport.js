@@ -11,13 +11,21 @@ module.exports = function (passport) {
       },
       async (email, password, done) => {
         try {
+          // 1. Fetch user
           const user = await db.getUserByEmail(email);
+
+          // 2. Immediately bail if email not found
+          if (!user) {
+            return done(null, false, { message: "Incorrect email" });
+          }
+
+          // 3. Now it’s safe to compare passwords
           const match = await bcrypt.compare(password, user.password);
-
-          if (!user) return done(null, false, { message: "Incorrect email" });
-          if (!match)
+          if (!match) {
             return done(null, false, { message: "Incorrect password" });
+          }
 
+          // 4. Success
           return done(null, user);
         } catch (err) {
           return done(err);
@@ -30,7 +38,8 @@ module.exports = function (passport) {
   passport.serializeUser((user, done) => done(null, user.user_id));
   passport.deserializeUser(async (user_id, done) => {
     try {
-      done(null, await db.getUserById(user_id));
+      const user = await db.getUserById(user_id);
+      done(null, user);
     } catch (err) {
       done(err);
     }

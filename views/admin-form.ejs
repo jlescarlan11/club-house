@@ -2,16 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Join the Club</title>
+    <title>Admin Form</title>
     <link rel="stylesheet" href="/stylesheets/main.css" />
   </head>
   <body>
     <div class="container">
-      <h1>🔒 Enter Secret Passcode</h1>
+      <h1>🔒 Provide a passcode to become an admin.</h1>
 
       <%- include('partials/errors') %>
 
-      <form action="/membership-form" method="POST">
+      <form action="/admin-form" method="POST">
         <div class="form-group">
           <label for="passcode">Passcode</label>
           <input

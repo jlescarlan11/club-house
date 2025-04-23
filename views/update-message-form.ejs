@@ -1,24 +1,24 @@
-<!-- create-message-form.ejs -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>New Message</title>
+    <!-- Add your CSS links or styles here -->
   </head>
   <body>
     <h1>Create New Message</h1>
     <%- include("partials/errors") %>
-    <form action="/messages/new" method="POST">
+    <form action="/messages/edit/<%= message.message_id %>" method="POST">
       <div class="form-group">
         <label for="title">Title:</label>
         <input
           type="text"
           id="title"
           name="title"
+          value="<%= message.title %>"
           required
           class="form-control"
-          value="<%= typeof title !== 'undefined' ? title : '' %>"
         />
       </div>
 
@@ -31,7 +31,7 @@
           required
           class="form-control"
         >
-<%= typeof content !== 'undefined' ? content : '' %></textarea
+<%= message.content %></textarea
         >
       </div>
 

@@ -32,6 +32,7 @@ app.use(
     },
   })
 );
+
 initializePassport(passport);
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));

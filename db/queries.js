@@ -53,7 +53,7 @@ module.exports = {
   getAllUserMessages: async () => {
     const { rows } = await pool.query(
       `
-      SELECT u.user_id, u.username, m.message_id, m.title, m.content, m.created_at, m.updated_at
+      SELECT u.user_id, u.first_name, u.last_name, u.username, m.message_id, m.title, m.content, m.created_at, m.updated_at
       FROM user_messages um
       LEFT JOIN users u ON um.user_id = u.user_id
       LEFT JOIN messages m ON um.message_id = m.message_id
@@ -61,5 +61,48 @@ module.exports = {
       `
     );
     return rows;
+  },
+
+  updateUserAdmin: async (user_id, user) => {
+    const result = await pool.query(
+      "UPDATE users SET is_admin = $1 WHERE user_id = $2 RETURNING *",
+      [user.is_admin, user_id]
+    );
+    return result.row[0];
+  },
+
+  getMessageById: async (id) => {
+    const result = await pool.query(
+      "SELECT * FROM messages WHERE message_id = $1",
+      [id]
+    );
+    return result.rows[0];
+  },
+
+  updateMessage: async (id, title, content) => {
+    const result = await pool.query(
+      "UPDATE messages SET title = $1, content = $2 WHERE message_id = $3 RETURNING *",
+      [title, content, id]
+    );
+    return result.rows[0];
+  },
+
+  deleteMessage: async (id) => {
+    await pool.query("DELETE FROM messages WHERE message_id = $1", [id]);
+    await pool.query("DELETE FROM user_messages WHERE message_id = $1", [id]);
+  },
+
+  findUserByEmail: async (email) => {
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+    return result.rows[0];
+  },
+
+  resetPassword: async (id, password) => {
+    await pool.query(
+      "UPDATE users SET password = $1 WHERE user_id = $2 RETURNING *",
+      [password, id]
+    );
   },
 };
