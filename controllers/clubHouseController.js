@@ -115,6 +115,7 @@ exports.clubHousePost = [
   async (req, res, next) => {
     const errors = validationResult(req);
     const { content } = req.body;
+    content.trim();
     if (!errors.isEmpty()) {
       return res.render("dashboard", {
         user: req.user,
@@ -243,6 +244,7 @@ exports.updateMessageGet = async (req, res, next) => {
   try {
     const messages = await db.getAllUserMessages();
     const messageContent = await db.getMessageById(req.params.id);
+    messageContent.content = messageContent.content.trim();
     res.render("update-message-form", {
       messageContent,
       user: req.user, // ← add this
