@@ -4,6 +4,7 @@ const clubHouseController = require("../controllers/clubHouseController");
 
 clubHouseRouter.get("/", clubHouseController.welcomePageGet);
 clubHouseRouter.get("/dashboard", clubHouseController.clubHouseGet);
+clubHouseRouter.post("/dashboard", clubHouseController.clubHousePost);
 clubHouseRouter.get("/signup", clubHouseController.signUpGet);
 clubHouseRouter.post("/signup", clubHouseController.signUpPost);
 clubHouseRouter.get("/", clubHouseController.logInGet);
@@ -14,8 +15,6 @@ clubHouseRouter.post(
   "/membership-form",
   clubHouseController.membershipFormPost
 );
-clubHouseRouter.get("/messages/new", clubHouseController.createMessageGet);
-clubHouseRouter.post("/messages/new", clubHouseController.createMessagePost);
 clubHouseRouter.get("/admin-form", clubHouseController.adminFormGet);
 clubHouseRouter.post("/admin-form", clubHouseController.adminFormPost);
 clubHouseRouter.get("/messages/edit/:id", clubHouseController.updateMessageGet);

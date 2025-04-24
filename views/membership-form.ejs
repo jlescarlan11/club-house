@@ -2,31 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join the Club</title>
-    <link rel="stylesheet" href="/stylesheets/main.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
-  <body>
-    <div class="container">
-      <h1>🔒 Enter Secret Passcode</h1>
+  <body class="flex flex-col h-screen bg-primary">
+    <%- include("partials/header") %>
 
-      <%- include('partials/errors') %>
+    <main class="container mx-auto pt-24 max-w-2xl flex-1">
+      <div class="bg-secondary rounded-2xl shadow-lg p-8">
+        <h1
+          class="text-4xl sm:text-5xl font-bold text-text text-center mb-6 flex items-center gap-2"
+        >
+          Enter Secret Passcode
+        </h1>
 
-      <form action="/membership-form" method="POST">
-        <div class="form-group">
-          <label for="passcode">Passcode</label>
-          <input
-            type="password"
-            id="passcode"
-            name="passcode"
-            class="input"
-            placeholder="Enter secret passcode"
-            required
-          />
+        <%- include('partials/errors') %>
+
+        <form action="/membership-form" method="POST" class="space-y-6">
+          <div class="space-y-4">
+            <label for="passcode" class="block text-sm font-medium text-text">
+              Passcode
+            </label>
+            <input
+              type="password"
+              id="passcode"
+              name="passcode"
+              class="w-full bg-primary text-text border border-secondary rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="Enter secret passcode"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-accent text-primary py-3 px-6 rounded-xl font-medium hover:bg-accent/90 transition-colors flex items-center justify-center gap-2"
+          >
+            <span class="material-symbols-outlined">verified</span>
+            Join the Club
+          </button>
+        </form>
+
+        <div class="mt-6 text-center">
+          <a
+            href="/dashboard"
+            class="text-text/80 hover:text-text transition-colors flex items-center justify-center gap-2"
+          >
+            <span class="material-symbols-outlined">arrow_back</span>
+            Back to Dashboard
+          </a>
         </div>
-        <input type="submit" value="Join the Club" />
-      </form>
-
-      <p><a href="/dashboard">← Back to Dashboard</a></p>
-    </div>
+      </div>
+    </main>
   </body>
 </html>

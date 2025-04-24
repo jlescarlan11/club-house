@@ -2,40 +2,180 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <title>Edit Message</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>New Message</title>
-    <!-- Add your CSS links or styles here -->
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
-  <body>
-    <h1>Create New Message</h1>
-    <%- include("partials/errors") %>
-    <form action="/messages/edit/<%= message.message_id %>" method="POST">
-      <div class="form-group">
-        <label for="title">Title:</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value="<%= message.title %>"
-          required
-          class="form-control"
-        />
+  <body class="flex flex-col h-screen bg-primary">
+    <!-- same header -->
+    <%- include("partials/header") %>
+
+    <main class="container mx-auto pt-24 max-w-2xl h-screen flex flex-col">
+      <!-- same error display -->
+      <%- include('partials/errors') %>
+
+      <!-- same “upgrade to pro” banner -->
+      <div
+        class="border border-secondary p-4 mb-4 flex gap-2 rounded-xl items-center"
+      >
+        <span class="material-symbols-outlined">group</span>
+        <p>
+          <a href="/membership-form" class="underline hover:text-accent">
+            Upgrade to Pro Member
+          </a>
+          to see user details and full chat history
+        </p>
       </div>
 
-      <div class="form-group">
-        <label for="content">Message:</label>
-        <textarea
-          id="content"
-          name="content"
-          rows="4"
-          required
-          class="form-control"
+      <!-- chat‐box wrapper (identical to dashboard) -->
+      <div
+        class="border border-secondary rounded-2xl shadow-lg flex flex-col h-[70vh]"
+      >
+        <!-- show the single message being edited, with identical styling -->
+        <div
+          id="messages"
+          class="opacity-50 flex-1 overflow-y-auto p-4 space-y-4"
         >
-<%= message.content %></textarea
-        >
-      </div>
+          <% if (messages && messages.length) { %>
+          <p></p>
+          <% messages.forEach(message => { %>
+          <div
+            class="flex <%= message.user_id === user.user_id ? 'justify-end' : 'justify-start' %>"
+          >
+            <div class="flex flex-col">
+              <div
+                class="flex text-xs items-center mb-2 font-medium <%= message.user_id === user.user_id ? 'justify-end pr-4' : 'justify-start pl-4' %>"
+              >
+                <% if (user.is_member) { %>
+                <span class="text-text">
+                  <%= message.user_id === user.user_id ? 'You' :
+                  message.first_name + ' ' + message.last_name %>
+                </span>
+                <% } else { %>
+                <span class="text-text">
+                  <%= message.user_id === user.user_id ? 'You' : "Anonymous" %>
+                </span>
+                <% } %>
+              </div>
 
-      <button type="submit" class="btn btn-primary">Create Message</button>
-    </form>
+              <% const d = new Date(message.created_at); const timeOpts = {
+              hour: "2-digit", minute: "2-digit" }; const dateOpts = { month:
+              "long", day: "numeric", year: "numeric" }; const ts =
+              d.toLocaleTimeString([], timeOpts) + ' · ' +
+              d.toLocaleDateString('en-US', dateOpts); %>
+
+              <div
+                class="rounded-2xl px-4 py-2 text-pretty <%= message.user_id === user.user_id ? 'bg-secondary' : 'bg-accent/50' %>"
+                title="<%= ts %>"
+              >
+                <p class="text-text text-xs text-left">
+                  <%= message.content %>
+                </p>
+              </div>
+              <% if (user.is_admin) { %>
+              <div
+                class="flex gap-2 mt-2 items-center <%= message.user_id === user.user_id ? 'justify-end pr-4' : 'justify-right pl-4' %>"
+              >
+                <a
+                  href="/messages/edit/<%= message.message_id %>"
+                  class="text-xs text-text/80 hover:text-text"
+                  >Edit</a
+                >
+                <form
+                  action="/messages/delete/<%= message.message_id %>"
+                  method="POST"
+                  class="flex items-center"
+                >
+                  <button
+                    type="submit"
+                    class="text-xs text-text/80 hover:text-text"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <% }) %> <% } else { %>
+          <div class="h-full flex items-center justify-center">
+            <p class="text-text/60">No messages yet. Start the conversation!</p>
+          </div>
+          <% } %>
+        </div>
+
+        <!-- update‐form at bottom, pre‐filled with existing content -->
+        <div class="border-t border-text/10 p-4">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-text font-medium">Edit</h3>
+            <a href="/dashboard" class="text-text/80 hover:text-text underline">
+              Close
+            </a>
+          </div>
+          <form
+            class="flex gap-2"
+            action="/messages/edit/<%= messageContent.message_id %>"
+            method="POST"
+          >
+            <textarea
+              id="content"
+              name="content"
+              placeholder="Type your message..."
+              rows="1"
+              maxlength="1000"
+              class="flex-1 bg-primary text-text rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-secondary resize-none max-h-48 overflow-y-auto"
+            >
+<%= messageContent.content %></textarea
+            >
+
+            <button
+              type="submit"
+              class="bg-secondary text-text px-6 py-2 rounded-xl hover:bg-secondary/80 transition-colors"
+            >
+              Update
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const messagesContainer = document.getElementById("messages");
+        const textarea = document.getElementById("content");
+
+        // Initial scroll to bottom
+        if (messagesContainer) {
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Auto-expanding textarea with scroll maintenance
+        if (textarea) {
+          const adjustHeight = () => {
+            // Reset height first to get correct scrollHeight
+            textarea.style.height = "auto";
+            // Set new height with 64px max height (max-h-48 = 192px)
+            const newHeight = Math.min(textarea.scrollHeight, 192);
+            textarea.style.height = `${newHeight}px`;
+
+            // Maintain messages container scroll position
+            if (messagesContainer) {
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+          };
+
+          textarea.addEventListener("input", adjustHeight);
+          adjustHeight(); // Initial adjustment
+
+          // Also scroll on focus in case keyboard appears on mobile
+          textarea.addEventListener("focus", () => {
+            if (messagesContainer) {
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>

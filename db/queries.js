@@ -34,10 +34,10 @@ module.exports = {
     return result.rows[0];
   },
 
-  createMessage: async (title, content) => {
+  createMessage: async (content) => {
     const result = await pool.query(
-      "INSERT INTO messages (title, content) VALUES ($1, $2) RETURNING *",
-      [title, content]
+      "INSERT INTO messages ( content) VALUES ($1) RETURNING *",
+      [content]
     );
     return result.rows[0];
   },
@@ -53,11 +53,11 @@ module.exports = {
   getAllUserMessages: async () => {
     const { rows } = await pool.query(
       `
-      SELECT u.user_id, u.first_name, u.last_name, u.username, m.message_id, m.title, m.content, m.created_at, m.updated_at
+      SELECT u.user_id, u.first_name, u.last_name, u.username, m.message_id, m.content, m.created_at, m.updated_at
       FROM user_messages um
       LEFT JOIN users u ON um.user_id = u.user_id
       LEFT JOIN messages m ON um.message_id = m.message_id
-      ORDER BY m.created_at DESC;
+      ORDER BY m.created_at;
       `
     );
     return rows;
@@ -79,10 +79,10 @@ module.exports = {
     return result.rows[0];
   },
 
-  updateMessage: async (id, title, content) => {
+  updateMessage: async (id, content) => {
     const result = await pool.query(
-      "UPDATE messages SET title = $1, content = $2 WHERE message_id = $3 RETURNING *",
-      [title, content, id]
+      "UPDATE messages SET content = $1 WHERE message_id = $2 RETURNING *",
+      [content, id]
     );
     return result.rows[0];
   },

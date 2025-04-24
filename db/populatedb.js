@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS users (
 -- Create messages table
 CREATE TABLE IF NOT EXISTS messages (
     message_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
