@@ -26,10 +26,10 @@ module.exports = {
     return result.rows[0];
   },
 
-  updateUserMembership: async (user_id, user) => {
+  updateUserMembership: async (user_id, is_member) => {
     const result = await pool.query(
       "UPDATE users SET is_member = $1 WHERE user_id = $2 RETURNING *",
-      [user.is_member, user_id]
+      [is_member, user_id]
     );
     return result.rows[0];
   },
