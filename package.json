@@ -2,7 +2,7 @@
   "scripts": {
     "populate-db": "node db/populatedb.js",
     "dev": "npm run build-css & npm start",
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "build-css": "tailwindcss --input public/tailwind.css --output public/stylesheets/style.css --watch --cssnano"
   },
   "dependencies": {
