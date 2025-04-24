@@ -63,10 +63,10 @@ module.exports = {
     return rows;
   },
 
-  updateUserAdmin: async (user_id, user) => {
+  updateUserAdmin: async (user_id, is_admin) => {
     const result = await pool.query(
       "UPDATE users SET is_admin = $1 WHERE user_id = $2 RETURNING *",
-      [user.is_admin, user_id]
+      [is_admin, user_id]
     );
     return result.rows[0];
   },
