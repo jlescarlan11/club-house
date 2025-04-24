@@ -11,7 +11,7 @@
     <%- include("partials/header") %>
 
     <main class="flex flex-col h-screen">
-      <div class="container mx-auto flex-1 pt-16 px-4 max-w-2xl flex flex-col">
+      <div class="container mx-auto flex-1 pt-20 px-4 max-w-2xl flex flex-col">
         <%- include('partials/errors') %>
         <br />
         <% if (!user.is_member) { %> <%- include('partials/membership-button')
@@ -19,17 +19,20 @@
 
         <!-- Fixed‐height chat box: 70% of viewport -->
         <div
-          class="border border-secondary rounded-2xl shadow-lg flex flex-col h-[72vh]"
+          class="border border-secondary rounded-2xl shadow-lg flex flex-col h-[70vh]"
         >
           <!-- Messages Container (scrolls when overflow) -->
-          <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+          <div
+            id="messages"
+            class="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4"
+          >
             <% if (messages && messages.length) { %>
             <p></p>
             <% messages.forEach(message => { %>
             <div
-              class="flex <%= message.user_id === user.user_id ? 'justify-end' : 'justify-start' %>"
+              class="flex min-w-0 <%= message.user_id === user.user_id ? 'justify-end' : 'justify-start' %>"
             >
-              <div class="flex flex-col">
+              <div class="flex flex-col min-w-0">
                 <div
                   class="flex text-xs items-center mb-2 font-medium <%= message.user_id === user.user_id ? 'justify-end pr-4' : 'justify-start pl-4' %>"
                 >
@@ -54,7 +57,7 @@
                 d.toLocaleDateString('en-US', dateOpts); %>
 
                 <div
-                  class="rounded-2xl px-4 py-2 text-pretty <%= message.user_id === user.user_id ? 'bg-secondary' : 'bg-accent/50' %>"
+                  class="rounded-2xl px-4 py-2 min-w-0 break-words <%= message.user_id === user.user_id ? 'bg-secondary' : 'bg-accent/50' %>"
                   title="<%= ts %>"
                 >
                   <p
