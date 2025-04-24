@@ -68,7 +68,7 @@ module.exports = {
       "UPDATE users SET is_admin = $1 WHERE user_id = $2 RETURNING *",
       [user.is_admin, user_id]
     );
-    return result.row[0];
+    return result.rows[0];
   },
 
   getMessageById: async (id) => {
